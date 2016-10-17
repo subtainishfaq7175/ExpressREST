@@ -7,9 +7,21 @@ var Schema=mongoose.Schema;
 
 var gameSchema = new Schema({
     title: String,
-    releaseYear: String,
-    director: String,
-    genre: String
+    release_date: String,
+    os: String,
+    studio: String,
+    series: String,
+    language: String,
+    category: String,
+    genre: String,
+    tags: String,
+    trailer: String,
+    content: String,
+    imge_url: String,
+    steam_url: String,
+    buy_url: String,
+    extra: String,
+
 });
 
 module.exports = mongoose.model('Game', gameSchema);

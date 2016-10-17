@@ -7,9 +7,11 @@ var Schema=mongoose.Schema;
 
 var letsplaySchema = new Schema({
     title: String,
-    releaseYear: String,
-    director: String,
-    genre: String
+    content: String,
+    imgae_url: String,
+    title_detials:{},
+    stream_url: {},
+    details: {}
 });
 
 module.exports = mongoose.model('Letsplay', letsplaySchema);
