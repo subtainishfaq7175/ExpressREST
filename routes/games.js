@@ -17,7 +17,7 @@ router.route('/games')
 })
 
 .post(function(req, res) {
-    var game = new Game(req.body);
+    var game = new Games(req.body);
 
     game.save(function(err) {
         if (err) {
