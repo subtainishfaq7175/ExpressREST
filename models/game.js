@@ -21,6 +21,8 @@ var gameSchema = new Schema({
     steam_url: String,
     buy_url: String,
     extra: String,
+    language: String,
+    is_feed: Boolean,
 
 });
 

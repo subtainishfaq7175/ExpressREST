@@ -11,7 +11,8 @@ var letsplaySchema = new Schema({
     imgae_url: String,
     title_detials:{},
     stream_url: {},
-    details: {}
+    details: {},
+    language: String
 });
 
 module.exports = mongoose.model('Letsplay', letsplaySchema);

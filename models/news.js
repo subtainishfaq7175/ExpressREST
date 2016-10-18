@@ -9,7 +9,8 @@ var newsSchema = new Schema({
     title: String,
     release_dear: String,
     image_url: String,
-    content: String
+    content: String,
+    language: String
 });
 
 module.exports = mongoose.model('News', newsSchema);
