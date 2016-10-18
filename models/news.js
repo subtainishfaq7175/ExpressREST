@@ -1,11 +1,11 @@
 /**
- * Created by subtainishfaq on 10/18/16.
- */
+ Created by subtainishfaq on 10/18/16.
+ **/
 
-var mongoose=require('mongoose');
+var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
-var Schema=mongoose.Schema;
+var Schema = mongoose.Schema;
 
 var newsSchema = new Schema({
     title: String,

@@ -14,7 +14,17 @@ mongoose.connect(connectionString);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
+//this for localhost
+app.use(function (req,res,next) {
+    res.header("Access-Control-Allow-Origin","*");
+    res.header("Access-Control-Allow-Methods","GET,PUT,POST,DELETE");
+    res.header("Access-Control-Allow-Headers","Content-Type");
+    next();
+
+});
 app.use('/api', games); //This is our route middleware
+
 
 module.exports = app;
 

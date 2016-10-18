@@ -106,6 +106,7 @@ router.route('/gamesupdate/')
     });
 router.route('/gamesfeed/')
     .get(function(req, res) {
+
         Games.find({is_feed:true},function(err, games) {
             if (err) {
                 return res.send(err);
