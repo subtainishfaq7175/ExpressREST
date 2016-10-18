@@ -3,6 +3,7 @@
  */
 
 var mongoose=require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 var Schema=mongoose.Schema;
 
 var gameSchema = new Schema({
@@ -25,5 +26,8 @@ var gameSchema = new Schema({
     is_feed: Boolean,
 
 });
+
+gameSchema.plugin(mongoosePaginate);
+
 
 module.exports = mongoose.model('Game', gameSchema);
