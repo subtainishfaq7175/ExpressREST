@@ -72,4 +72,28 @@ router.route('/letsplays/:id').delete(function(req, res) {
     });
 });
 
+
+
+router.route('/letsplayupdate/')
+    .get(function(req, res) {
+        Letsplays.find(function(err, letsplays) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(letsplays);
+        }).limit(3);
+    });
+router.route('/letsplayfeed/')
+    .get(function(req, res) {
+        Letsplays.find({is_feed:true},function(err, letsplays) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(letsplays);
+        })
+    });
+
+
 module.exports = router;

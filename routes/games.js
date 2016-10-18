@@ -83,6 +83,16 @@ router.route('/games/:id').delete(function(req, res) {
     });
 });
 
+router.route('/gamesupdate/')
+    .get(function(req, res) {
+        Games.find(function(err, games) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(games);
+        }).limit(5);
+    });
 router.route('/gamesfeed/')
     .get(function(req, res) {
         Games.find({is_feed:true},function(err, games) {
@@ -91,7 +101,7 @@ router.route('/gamesfeed/')
             }
 
             res.json(games);
-        }).limit(5);
+        })
     });
 
 module.exports = router;

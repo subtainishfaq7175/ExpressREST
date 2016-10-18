@@ -12,7 +12,8 @@ var letsplaySchema = new Schema({
     title_detials:{},
     stream_url: {},
     details: {},
-    language: String
+    language: String,
+    is_feed:Boolean
 });
 
 module.exports = mongoose.model('Letsplay', letsplaySchema);

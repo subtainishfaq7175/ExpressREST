@@ -72,4 +72,26 @@ router.route('/news/:id').delete(function(req, res) {
     });
 });
 
+router.route('/newsupdate')
+    .get(function(req, res) {
+        News.find(function(err, news) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(news);
+        }).limit(1);
+    });
+
+router.route('/newsfeed')
+    .get(function(req, res) {
+        News.find({is_feed: true },function(err, news) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(news);
+        })
+    });
+
 module.exports = router;
