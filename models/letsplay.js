@@ -3,6 +3,8 @@
  */
 
 var mongoose=require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+
 var Schema=mongoose.Schema;
 
 var letsplaySchema = new Schema({
@@ -15,5 +17,6 @@ var letsplaySchema = new Schema({
     language: String,
     is_feed:Boolean
 });
+letsplaySchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Letsplay', letsplaySchema);

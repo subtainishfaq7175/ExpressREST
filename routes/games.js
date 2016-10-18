@@ -8,7 +8,7 @@ var router = express.Router();
 router.route('/games')
     .get(function(req, res) {
         console.log("inget");
-        Games.paginate({}, { page: 2, limit: 10 }, function(error, pageCount, paginatedResults) {
+        Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);

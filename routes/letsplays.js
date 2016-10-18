@@ -7,6 +7,17 @@ var router = express.Router();
 
 router.route('/letsplays')
     .get(function(req, res) {
+        Letsplays.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+            if (error) {
+                console.error(error);
+                res.send(error);
+            } else {
+                //  console.log('Pages:', pageCount);
+                //  console.log(paginatedResults);
+                res.json(pageCount);
+            }
+        });
+        /*
     Letsplays.find(function(err, letsplays) {
         if (err) {
             return res.send(err);
@@ -14,6 +25,7 @@ router.route('/letsplays')
 
         res.json(letsplays);
     });
+*/
 })
 
 .post(function(req, res) {

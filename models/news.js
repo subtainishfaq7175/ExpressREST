@@ -3,6 +3,8 @@
  */
 
 var mongoose=require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+
 var Schema=mongoose.Schema;
 
 var newsSchema = new Schema({
@@ -14,4 +16,5 @@ var newsSchema = new Schema({
     is_feed:Boolean
 });
 
+newsSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('News', newsSchema);
