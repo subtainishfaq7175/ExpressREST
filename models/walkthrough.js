@@ -1,12 +1,11 @@
 /**
- * Created by subtainishfaq on 10/18/16.
+ * Created by subtainishfaq on 10/20/16.
  */
-
 var mongoose=require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var Schema=mongoose.Schema;
 
-var gameSchema = new Schema({
+var walkthroughSchema = new Schema({
     title: String,
     release_date: String,
     os: String,
@@ -26,8 +25,3 @@ var gameSchema = new Schema({
     is_feed: Boolean,
 
 });
-
-gameSchema.plugin(mongoosePaginate);
-
-
-module.exports = mongoose.model('Game', gameSchema);

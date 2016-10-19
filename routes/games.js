@@ -29,7 +29,7 @@ router.route('/games')
 
 .post(function(req, res) {
     var game = new Games(req.body);
-    if(req.files.file)
+  /*  if(req.files.file)
     {   // If the Image exists
         var fs = require('node-fs');
         fs.readFile(req.files.file.path, function (dataErr, data) {
@@ -39,7 +39,7 @@ router.route('/games')
 
             }
         });
-    }
+    }*/
 
     game.save(function(err) {
         if (err) {
