@@ -10,7 +10,7 @@ var router = express.Router();
 
 router.route('/walkthrough')
     .get(function(req, res) {
-        /*  console.log("inget");
+          console.log("inget");
          Walkthrough.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
          if (error) {
          console.error(error);
@@ -20,15 +20,15 @@ router.route('/walkthrough')
          //  console.log(paginatedResults);
          res.json(pageCount);
          }
-         });*/
-        Walkthrough.find(function(err, walkthrough) {
+         });
+     /*   Walkthrough.find(function(err, walkthrough) {
             if (err) {
                 return res.send(err);
             }
 
             res.json(walkthrough);
         });
-    })
+*/    })
 
     .post(function(req, res) {
         var walkthrough = new Walkthrough(req.body);

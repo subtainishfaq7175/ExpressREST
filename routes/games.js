@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.route('/games')
     .get(function(req, res) {
-      /*  console.log("inget");
+        console.log("inget");
         Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
@@ -17,14 +17,14 @@ router.route('/games')
               //  console.log(paginatedResults);
                 res.json(pageCount);
             }
-        });*/
-    Games.find(function(err, games) {
+        });
+/*    Games.find(function(err, games) {
         if (err) {
             return res.send(err);
         }
 
         res.json(games);
-    });
+    });*/
 })
 
 .post(function(req, res) {

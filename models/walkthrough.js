@@ -25,3 +25,9 @@ var walkthroughSchema = new Schema({
     is_feed: Boolean,
 
 });
+
+
+walkthroughSchema.plugin(mongoosePaginate);
+
+
+module.exports = mongoose.model('Walkthrough', walkthroughSchema);

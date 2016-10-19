@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var games = require('./routes/games'); //routes are defined here
 var letsplays = require('./routes/letsplays'); //routes are defined here
 var news = require('./routes/news'); //routes are defined here
+var walkthrough = require('./routes/walkthrough'); //routes are defined here
 
 var app = express(); //Create the Express app
 
@@ -28,6 +29,7 @@ app.use(function (req,res,next) {
 app.use('/api', games); //This is our route middleware
 app.use('/api', letsplays); //This is our route middleware
 app.use('/api', news); //This is our route middleware
+app.use('/api', walkthrough); //This is our route middleware
 
 
 module.exports = app;
