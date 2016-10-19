@@ -24,6 +24,7 @@ var gameSchema = new Schema({
     extra: String,
     language: String,
     is_feed: Boolean,
+     image:Buffer
 
 });
 

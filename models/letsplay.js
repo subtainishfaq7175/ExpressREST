@@ -15,7 +15,9 @@ var letsplaySchema = new Schema({
     stream_url: {},
     details: {},
     language: String,
-    is_feed:Boolean
+    is_feed:Boolean,
+    image:Buffer
+
 });
 letsplaySchema.plugin(mongoosePaginate);
 

@@ -13,7 +13,9 @@ var newsSchema = new Schema({
     image_url: String,
     content: String,
     language: String,
-    is_feed:Boolean
+    is_feed:Boolean,
+    image:Buffer
+
 });
 
 newsSchema.plugin(mongoosePaginate);

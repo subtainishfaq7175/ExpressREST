@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.route('/games')
     .get(function(req, res) {
-        console.log("inget");
+      /*  console.log("inget");
         Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
@@ -17,18 +17,29 @@ router.route('/games')
               //  console.log(paginatedResults);
                 res.json(pageCount);
             }
-        });
-   /* Games.find(function(err, games) {
+        });*/
+    Games.find(function(err, games) {
         if (err) {
             return res.send(err);
         }
 
         res.json(games);
-    });*/
+    });
 })
 
 .post(function(req, res) {
     var game = new Games(req.body);
+    if(req.files.file)
+    {   // If the Image exists
+        var fs = require('node-fs');
+        fs.readFile(req.files.file.path, function (dataErr, data) {
+            if(data) {
+                game.image ='';
+                gaem.image = data;  // Assigns the image to the path.
+
+            }
+        });
+    }
 
     game.save(function(err) {
         if (err) {
@@ -115,5 +126,41 @@ router.route('/gamesfeed/')
             res.json(games);
         })
     });
+
+/*
+
+router.route('/gamesimage/:id').post(function(req, res) {
+    var game = new Games(req.body);
+
+    game.save(function(err) {
+        if (err) {
+            return res.send(err);
+        }
+
+        res.send({ message: 'Game Added' });
+    });
+});
+
+ put(function(req,res){
+ Games.findOne({ _id: req.params.id }, function(err, game) {
+ if (err) {
+ return res.send(err);
+ }
+
+ for (prop in req.body) {
+ game[prop] = req.body[prop];
+ }
+
+ // save the game
+ game.save(function(err) {
+ if (err) {
+ return res.send(err);
+ }
+
+ res.json({ message: 'Game updated!' });
+ });
+ });
+ });
+*/
 
 module.exports = router;
