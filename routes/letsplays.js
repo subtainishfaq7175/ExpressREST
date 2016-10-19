@@ -86,7 +86,7 @@ router.route('/letsplays/:id').delete(function(req, res) {
 
 
 
-router.route('/letsplayupdate/')
+router.route('/letsplaysupdate')
     .get(function(req, res) {
         Letsplays.find(function(err, letsplays) {
             if (err) {
