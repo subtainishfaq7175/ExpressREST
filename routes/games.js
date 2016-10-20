@@ -3,6 +3,9 @@
  */
 var Games = require('../models/game');
 var express = require('express');
+var multer  = require('multer');
+var upload = multer({ dest: 'public/uploads/' });
+
 var router = express.Router();
 
 router.route('/games')
@@ -29,18 +32,6 @@ router.route('/games')
 
 .post(function(req, res) {
     var game = new Games(req.body);
-  /*  if(req.files.file)
-    {   // If the Image exists
-        var fs = require('node-fs');
-        fs.readFile(req.files.file.path, function (dataErr, data) {
-            if(data) {
-                game.image ='';
-                gaem.image = data;  // Assigns the image to the path.
-
-            }
-        });
-    }*/
-
     game.save(function(err) {
         if (err) {
             return res.send(err);
@@ -71,16 +62,6 @@ router.route('/games/:id').put(function(req,res){
     });
 });
 
-
-router.route('/games/:id').get(function(req, res) {
-    Games.findOne({ _id: req.params.id}, function(err, game) {
-        if (err) {
-            return res.send(err);
-        }
-
-        res.json(game);
-    });
-});
 
 router.route('/games/:id').get(function(req, res) {
     Games.findOne({ _id: req.params.id}, function(err, game) {
@@ -126,6 +107,27 @@ router.route('/gamesfeed/')
             res.json(games);
         })
     });
+
+router.route('/gamesimage/:id').put(upload.any(),function(req,res){
+    Games.findOne({ _id: req.params.id }, function(err, game) {
+        if (err) {
+            return res.send(err);
+        }
+          //  game["image"] = req.file.name;
+          //  game["image"] = req.file.name;
+          //  game["image"] = req.file.name;
+
+
+        // save the game
+        game.save(function(err) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json({ message: 'Game updated!' });
+        });
+    });
+});
 
 /*
 
