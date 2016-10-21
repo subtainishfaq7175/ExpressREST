@@ -17,6 +17,11 @@ var letsplaySchema = new Schema({
     language: String,
     is_feed:Boolean,
     image:Buffer,
+    short_titles:[{title:String}],
+    alternative_titles:[{title:String}],
+    screen_images:[{imgae_url:String}],
+    genre:[{title:String}],
+    chanell:[{title:String}],
     episodes: [{
         episode_title:String,
         streams:
@@ -36,7 +41,13 @@ var letsplaySchema = new Schema({
             ]
                 }],
 
-    created_time:  { type: Date, default: Date.now }
+    created_time:  { type: Date, default: Date.now },
+    release_date:  { type: Date, default: Date.now },
+    tags:[{
+        title:String
+    }],
+    season:String,
+    length:Number
 
 });
 letsplaySchema.plugin(mongoosePaginate);

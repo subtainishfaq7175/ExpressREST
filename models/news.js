@@ -15,7 +15,7 @@ var newsSchema = new Schema({
     language: String,
     is_feed:Boolean,
     image:Buffer,
-    tags: Schema.Types.Mixed
+    tags: [{title:String}]
 
 });
 
