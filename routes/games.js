@@ -3,10 +3,11 @@
  */
 var Games = require('../models/game');
 var express = require('express');
-var multer  = require('multer');
-var upload = multer({ dest: 'public/uploads/' });
+var fs = require('node-fs');
+var busboy = require('connect-busboy');
 
 var router = express.Router();
+router.use(busboy())
 
 router.route('/games')
     .get(function(req, res) {
@@ -108,8 +109,76 @@ router.route('/gamesfeed/')
         })
     });
 
-router.route('/gamesimage/:id').put(upload.any(),function(req,res){
-    Games.findOne({ _id: req.params.id }, function(err, game) {
+router.route('/gamesimage/:id').put(function(req,res){
+
+
+    var fstream;
+    req.pipe(req.busboy);
+    req.busboy.on('file', function (fieldname, file, filename) {
+        //fstream = fs.createWriteStream('../public/uploads/' + filename);
+
+        // fstream.on('close', function () {
+        //     res.redirect('back');
+        // });
+
+
+
+          Games.findOne({ _id: req.params.id }, function(err, game) {
+         if (err) {
+         return res.send(err);
+         }
+         console.log(file);
+          game["image"] = file.buffer;
+
+         //  game["image"] = req.file.name;
+         //  game["image"] = req.file.name;
+
+
+         // save the game
+         game.save(function(err) {
+         if (err) {
+         return res.send(err);
+         }
+
+         res.json({ message: 'Game updated!' });
+         });
+         });
+
+    });
+
+
+/*
+
+    console.log(req.files) // File from Client
+    if(req.files.file){   // If the Image exists
+        fs.readFile(req.files.file.path, function (dataErr, data) {
+            if(data) {
+
+                Games.findOne({ _id: req.params.id }, function(err, game) {
+                    if (err) {
+                        return res.send(err);
+                    }
+                      game["image"] = data;
+                    //  game["image"] = req.file.name;
+                    //  game["image"] = req.file.name;
+
+
+                    // save the game
+                    game.save(function(err) {
+                        if (err) {
+                            return res.send(err);
+                        }
+                    });
+
+               });
+            }
+        });
+        return
+    }
+    res.json(HttpStatus.BAD_REQUEST,{error:"Error in file upload"});*/
+
+
+    /*  Games.findOne({ _id: req.params.id }, function(err, game) {
         if (err) {
             return res.send(err);
         }
@@ -126,7 +195,7 @@ router.route('/gamesimage/:id').put(upload.any(),function(req,res){
 
             res.json({ message: 'Game updated!' });
         });
-    });
+    });*/
 });
 
 /*

@@ -9,12 +9,13 @@ var Schema = mongoose.Schema;
 
 var newsSchema = new Schema({
     title: String,
-    release_dear: String,
+    release_date:  { type: Date, default: Date.now },
     image_url: String,
     content: String,
     language: String,
     is_feed:Boolean,
-    image:Buffer
+    image:Buffer,
+    tags: Schema.Types.Mixed
 
 });
 

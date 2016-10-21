@@ -16,7 +16,27 @@ var letsplaySchema = new Schema({
     details: {},
     language: String,
     is_feed:Boolean,
-    image:Buffer
+    image:Buffer,
+    episodes: [{
+        episode_title:String,
+        streams:
+            [
+                {
+                    title:String,
+                    stream_links:
+                    [
+                        {
+                            url:String,
+                            isYoutube:Boolean,
+                            isDailymotion:Boolean,
+                            isVimeo:Boolean,
+                        }
+                    ]
+                }
+            ]
+                }],
+
+    created_time:  { type: Date, default: Date.now }
 
 });
 letsplaySchema.plugin(mongoosePaginate);
