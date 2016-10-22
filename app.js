@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var games = require('./routes/games'); //routes are defined here
 var letsplays = require('./routes/letsplays'); //routes are defined here
 var news = require('./routes/news'); //routes are defined here
-var walkthrough = require('./routes/walkthrough'); //routes are defined here
+var walkthrough = require('./routes/walkthroughs'); //routes are defined here
 
 var app = express(); //Create the Express app
 

@@ -85,15 +85,6 @@ router.route('/walkthrough/:id').get(function(req, res) {
     });
 });
 
-router.route('/walkthrough/:id').get(function(req, res) {
-    Walkthrough.findOne({ _id: req.params.id}, function(err, walkthrough) {
-        if (err) {
-            return res.send(err);
-        }
-
-        res.json(walkthrough);
-    });
-});
 
 
 router.route('/walkthrough/:id').delete(function(req, res) {
@@ -108,27 +99,6 @@ router.route('/walkthrough/:id').delete(function(req, res) {
     });
 });
 
-router.route('/walkthroughupdate/')
-    .get(function(req, res) {
-        Walkthrough.find(function(err, walkthrough) {
-            if (err) {
-                return res.send(err);
-            }
-
-            res.json(walkthrough);
-        }).limit(5);
-    });
-router.route('/walkthroughfeed/')
-    .get(function(req, res) {
-
-        Walkthrough.find({is_feed:true},function(err, walkthrough) {
-            if (err) {
-                return res.send(err);
-            }
-
-            res.json(walkthrough);
-        })
-    });
 
 /*
 

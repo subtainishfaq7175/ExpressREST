@@ -19,7 +19,7 @@ var letsplaySchema = new Schema({
     image:Buffer,
     short_titles:[{title:String}],
     alternative_titles:[{title:String}],
-    screen_images:[{imgae_url:String}],
+    screen_images:[{image_url:String}],
     genre:[{title:String}],
     chanell:[{title:String}],
     episodes: [{

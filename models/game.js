@@ -9,13 +9,8 @@ var Schema=mongoose.Schema;
 var gameSchema = new Schema({
     title: String,
     release_date: String,
-    os: String,
     studio: String,
     series: String,
-    language: String,
-    category: String,
-    genre: String,
-    tags: String,
     trailer: String,
     content: String,
     imge_url: String,
@@ -24,7 +19,19 @@ var gameSchema = new Schema({
     extra: String,
     is_feed: Boolean,
     image:Buffer,
-    image_url: String
+    image_url: String,
+    categories:[{title:String}],
+    genre:[{title:String}],
+    languages:[{title:String}],
+    os:[{title:String}],
+    tags:[{title:String}],
+    amazon_url:String,
+    gamestop_url:String,
+    screen_images:[{image_url:String}],
+    operational_requirements:[{title:String}]
+
+
+
 
 });
 
