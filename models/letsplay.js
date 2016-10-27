@@ -10,7 +10,7 @@ var Schema=mongoose.Schema;
 var letsplaySchema = new Schema({
     title: String,
     content: String,
-    imgae_url: String,
+    image_url: String,
     title_detials:{},
     stream_url: {},
     details: {},
@@ -23,7 +23,7 @@ var letsplaySchema = new Schema({
     genre:[{title:String}],
     chanell:[{title:String}],
     episodes: [{
-        episode_title:String,
+        title:String,
         streams:
             [
                 {

@@ -41,7 +41,7 @@ router.route('/letsplays')
 });
 
 router.route('/letsplays/:id').put(function(req,res){
-    Letsplay.findOne({ _id: req.params.id }, function(err, letsplay) {
+    Letsplays.findOne({ _id: req.params.id }, function(err, letsplay) {
         if (err) {
             return res.send(err);
         }
@@ -63,7 +63,7 @@ router.route('/letsplays/:id').put(function(req,res){
 
 
 router.route('/letsplays/:id').get(function(req, res) {
-    Letsplay.findOne({ _id: req.params.id}, function(err, letsplay) {
+    Letsplays.findOne({ _id: req.params.id}, function(err, letsplay) {
         if (err) {
             return res.send(err);
         }
@@ -73,7 +73,7 @@ router.route('/letsplays/:id').get(function(req, res) {
 });
 
 router.route('/letsplays/:id').delete(function(req, res) {
-    Letsplay.remove({
+    Letsplays.remove({
         _id: req.params.id
     }, function(err, letsplay) {
         if (err) {

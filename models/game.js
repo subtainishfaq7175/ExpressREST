@@ -13,7 +13,6 @@ var gameSchema = new Schema({
     series: String,
     trailer: String,
     content: String,
-    imge_url: String,
     steam_url: String,
     buy_url: String,
     extra: String,
