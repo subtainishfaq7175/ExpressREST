@@ -8,7 +8,7 @@ var Schema=mongoose.Schema;
 
 var gameSchema = new Schema({
     title: String,
-    release_date: String,
+    release_date: Date,
     studio: String,
     series: String,
     trailer: String,
