@@ -102,8 +102,7 @@ router.route('/newsupdatef')
             }
 
             res.json(news);
-        })
-            .limit(4);
+        }).limit(4);
     });
 
 router.route('/newsfeed')
