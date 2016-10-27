@@ -66,7 +66,33 @@ router.route('/gamesgte/:dat')
 
          res.json(games);
          });*/
-    })
+    });
+router.route('/gamesrange')
+    .get(function(req, res) {
+
+
+
+
+        Games.find({
+                release_date: {$gte: new Date(req.param('datstart')),$lte: new Date(req.param('datend') ) }
+
+        }
+
+        , function(err, game) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(game);
+        });
+        /*    Games.find(function(err, games) {
+         if (err) {
+         return res.send(err);
+         }
+
+         res.json(games);
+         });*/
+    });
 
 router.route('/games/:id').put(function(req,res){
     Games.findOne({ _id: req.params.id }, function(err, game) {
