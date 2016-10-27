@@ -11,7 +11,6 @@ router.use(busboy())
 
 router.route('/games')
     .get(function(req, res) {
-        console.log("inget");
         Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
@@ -31,6 +30,9 @@ router.route('/games')
     });*/
 })
 
+
+
+
 .post(function(req, res) {
     var game = new Games(req.body);
     game.save(function(err) {
@@ -41,6 +43,30 @@ router.route('/games')
         res.send({ message: 'Game Added' });
     });
 });
+
+router.route('/gamesgte/:dat')
+    .get(function(req, res) {
+
+
+
+        Games.find({
+
+            release_date: { $gte: req.params.dat }
+        }, function(err, game) {
+            if (err) {
+                return res.send(err);
+            }
+
+            res.json(game);
+        });
+        /*    Games.find(function(err, games) {
+         if (err) {
+         return res.send(err);
+         }
+
+         res.json(games);
+         });*/
+    })
 
 router.route('/games/:id').put(function(req,res){
     Games.findOne({ _id: req.params.id }, function(err, game) {
