@@ -39,7 +39,6 @@ router.post('/authenticate', function(req, res) {
       // check if password matches
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (isMatch && !err) {
-          console.log(user);
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
@@ -63,7 +62,7 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false}), funct
       if (!user) {
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
       } else {
-        res.json({success: true, msg: 'Welcome in the member area ' + user.name + ' role ' + decoded.userrole});
+        res.json({success: true, msg: 'Welcome in the member area ' + user.name + ' role ' + decoded.userRole});
       }
     });
   } else {
