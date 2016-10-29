@@ -17,33 +17,16 @@ router.use(busboy())
 router.route('/games')
     .get(function(req, res) {
 
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
 
-                if (!user) {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else {
-                    Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
-                        if (error) {
-                            console.error(error);
-                            res.send(error);
-                        } else {
+        Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+            if (error) {
+                console.error(error);
+                res.send(error);
+            } else {
 
-                            res.json(pageCount);
-                        }
-                    });
-                }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
-
-
+                res.json(pageCount);
+            }
+        });
 
 
 })
@@ -90,76 +73,34 @@ router.route('/games')
 router.route('/gamesgte/:dat')
     .get(function(req, res) {
 
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
+        Games.find({
 
-                if (!user)
-                {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else
-                {
+            release_date: { $gte: req.params.dat }
+        }, function(err, game) {
+            if (err) {
+                return res.send(err);
+            }
 
-                    Games.find({
-
-                        release_date: { $gte: req.params.dat }
-                    }, function(err, game) {
-                        if (err) {
-                            return res.send(err);
-                        }
-
-                        res.json(game);
-                    });
-
-                }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
-
+            res.json(game);
+        });
 
     });
 router.route('/gamesrange')
     .get(function(req, res) {
 
 
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
+        Games.find({
+                release_date: {$gte: new Date(req.param('datstart')),$lte: new Date(req.param('datend') ) }
 
-                if (!user)
-                {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else
-                {
+            }
 
-                    Games.find({
-                            release_date: {$gte: new Date(req.param('datstart')),$lte: new Date(req.param('datend') ) }
-
-                        }
-
-                        , function(err, game) {
-                            if (err) {
-                                return res.send(err);
-                            }
-
-                            res.json(game);
-                        });
-
+            , function(err, game) {
+                if (err) {
+                    return res.send(err);
                 }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
 
+                res.json(game);
+            });
 
 
 
@@ -181,9 +122,6 @@ router.route('/games/:id').put(function(req,res){
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else
             {
-
-
-
 
                 Games.findOne({ _id: req.params.id }, function(err, game) {
                     if (err) {
@@ -218,39 +156,13 @@ router.route('/games/:id').put(function(req,res){
 
 
 router.route('/games/:id').get(function(req, res) {
-    var token = getToken(req.headers);
-    if (token) {
-        var decoded = jwt.decode(token, config.secret);
-        User.findOne({
-            name: decoded.name
-        }, function(err, user) {
-            if (err) throw err;
+    Games.findOne({ _id: req.params.id}, function(err, game) {
+        if (err) {
+            return res.send(err);
+        }
 
-            if (!user)
-            {
-                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-            } else
-            {
-
-
-
-
-                Games.findOne({ _id: req.params.id}, function(err, game) {
-                    if (err) {
-                        return res.send(err);
-                    }
-
-                    res.json(game);
-                });
-
-
-            }
-        });
-    } else {
-        return res.status(403).send({success: false, msg: 'No token provided.'});
-    }
-
-
+        res.json(game);
+    });
 
 });
 
