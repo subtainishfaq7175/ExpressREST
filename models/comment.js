@@ -12,7 +12,7 @@ var commentSchema = new Schema(
     discussion_id: String,
     content: String,
     user : String,
-      date:   { type: Date, default: Date.now }
+    date:   { type: Date, default: Date.now }
 
 }
 

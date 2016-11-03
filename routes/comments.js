@@ -15,7 +15,8 @@ var router = express.Router();
 
 router.route('/comments')
     .get(function(req, res) {
-        Comments.find( function(err, comments) {
+
+        Comments.find({discussion_id :req.param('discussion_id')}, function(err, comments) {
 
             if (err)
                 res.send(err);
