@@ -4,6 +4,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+var mongoosePaginate = require('mongoose-paginate');
+
+
 
 // Thanks to http://blog.matoski.com/articles/jwt-express-node-mongoose/
 
@@ -50,4 +53,5 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     });
 };
 
+UserSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('User', UserSchema);

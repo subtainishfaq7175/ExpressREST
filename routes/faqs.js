@@ -1,10 +1,7 @@
 /**
- * Created by subtainishfaq on 11/3/16.
- */
-/**
  * Created by subtainishfaq on 10/18/16.
  */
-var Comments = require('../models/comment');
+var Faqs = require('../models/faq');
 var express = require('express');
 var jwt    = require('jwt-simple');
 var config      = require('../config/database');
@@ -13,74 +10,23 @@ var User = require('../models/user');
 
 var router = express.Router();
 
-router.route('/comments')
+router.route('/faqs')
     .get(function(req, res) {
 
-        Comments.find({discussion_id :req.param('discussion_id')}, function(err, comments) {
-
-            if (err)
-                res.send(err);
-
-            res.json(comments);
-        });
-
-
-
-
-
-    })
-
-
-router.route('/commentsadmin')
-    .get(function(req, res) {
-
-
-        Comments.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+       Faqs.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);
             } else {
-
+                //  console.log('Pages:', pageCount);
+                //  console.log(paginatedResults);
                 res.json(pageCount);
             }
         });
 
+})
 
-    })
-
-    .post(function(req, res) {
-
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
-
-                if (!user) {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else {
-
-                    var comments = new Comments(req.body);
-
-                    comments.save(function(err) {
-                        if (err) {
-                            return res.send(err);
-                        }
-
-                        res.send({ message: 'Comments Added' });
-                    });
-
-                }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
-
-    });
-
-router.route('/comments/:id').put(function(req,res){
+.post(function(req, res) {
 
     var token = getToken(req.headers);
     if (token) {
@@ -94,22 +40,54 @@ router.route('/comments/:id').put(function(req,res){
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
 
-                Comments.findOne({ _id: req.params.id }, function(err, comments) {
+                var faqs = new Faqs(req.body);
+
+                faqs.save(function(err) {
+                    if (err) {
+                        return res.send(err);
+                    }
+
+                    res.send({ message: 'Faqs Added' });
+                });
+
+            }
+        });
+    } else {
+        return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
+
+});
+
+router.route('/faqs/:id').put(function(req,res){
+
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, config.secret);
+        User.findOne({
+            name: decoded.name
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+            } else {
+
+                Faqs.findOne({ _id: req.params.id }, function(err, faqs) {
                     if (err) {
                         return res.send(err);
                     }
 
                     for (prop in req.body) {
-                        comments[prop] = req.body[prop];
+                        faqs[prop] = req.body[prop];
                     }
 
-                    // save the comments
-                    comments.save(function(err) {
+                    // save the faqs
+                    faqs.save(function(err) {
                         if (err) {
                             return res.send(err);
                         }
 
-                        res.json({ message: 'Comments updated!' });
+                        res.json({ message: 'Faqs updated!' });
                     });
                 });
             }
@@ -124,17 +102,17 @@ router.route('/comments/:id').put(function(req,res){
 });
 
 
-router.route('/comments/:id').get(function(req, res) {
-    Comments.findOne({ _id: req.params.id}, function(err, comments) {
+router.route('/faqs/:id').get(function(req, res) {
+    Faqs.findOne({ _id: req.params.id}, function(err, faqs) {
         if (err) {
             return res.send(err);
         }
 
-        res.json(comments);
+        res.json(faqs);
     });
 });
 
-router.route('/comments/:id').delete(function(req, res) {
+router.route('/faqs/:id').delete(function(req, res) {
 
     var token = getToken(req.headers);
     if (token) {
@@ -148,9 +126,9 @@ router.route('/comments/:id').delete(function(req, res) {
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
 
-                Comments.remove({
+                Faqs.remove({
                     _id: req.params.id
-                }, function(err, comments) {
+                }, function(err, faqs) {
                     if (err) {
                         return res.send(err);
                     }

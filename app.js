@@ -13,6 +13,7 @@ var app = express(); //Create the Express app
 var config      = require('./config/database');
 var authentication=require('./routes/users');
 var comments=require('./routes/comments');
+var faqs=require('./routes/faqs');
 
 
 
@@ -44,6 +45,7 @@ app.use('/api', letsplays); //This is our route middleware
 app.use('/api', news); //This is our route middleware
 app.use('/api', walkthrough); //This is our route middleware
 app.use('/api', comments); //This is our route middleware
+app.use('/api', faqs); //This is our route middleware
 
 
 module.exports = app;

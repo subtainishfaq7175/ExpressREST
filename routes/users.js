@@ -7,6 +7,24 @@ var passport	= require('passport');
 
 
 
+router.route('/users')
+    .get(function(req, res) {
+
+
+      User.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+        if (error) {
+          console.error(error);
+          res.send(error);
+        } else {
+
+          res.json(pageCount);
+        }
+      });
+
+
+    })
+
+
 
 router.post('/signup', function(req, res) {
   if (!req.body.name || !req.body.password) {
