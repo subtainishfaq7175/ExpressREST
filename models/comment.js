@@ -9,7 +9,6 @@ var mongoosePaginate = require('mongoose-paginate');
 
 var commentSchema = new Schema(
 
-
 {
     discussion_id: String,
     content: String,
@@ -18,9 +17,7 @@ var commentSchema = new Schema(
 
 }
 
-
-
-    );
+);
 
 
 commentSchema.plugin(mongoosePaginate);
