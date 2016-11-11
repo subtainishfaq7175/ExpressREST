@@ -15,9 +15,10 @@ var authentication=require('./routes/users');
 var comments=require('./routes/comments');
 var faqs=require('./routes/faqs');
 var masterdata=require('./routes/masterdata');
+var fileUpload = require('express-fileupload');
 
 
-
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(morgan('dev'));
@@ -25,16 +26,17 @@ app.use(passport.initialize());
 
 //this for localhost
 app.use(function (req,res,next) {
-    res.header("Access-Control-Allow-Origin","*");
-
+    res.header("Access-Control-Allow-Origin",'http://localhost:9000');
     res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-   next();
+    res.header('Access-Control-Allow-Credentials', true);
+
+    next();
 
 });
 
-
 app.use('/',index);
+app.use('/public', express.static(__dirname + '/public'));
 mongoose.connect(config.database);
 require('./config/passport')(passport);
 

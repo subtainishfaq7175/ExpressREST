@@ -144,6 +144,30 @@ router.route('/letsplayfeed/')
         })
     });
 
+router.route('/letsplayimage/')
+    .post(function(req, res) {
+        var sampleFile;
+
+        if (!req.files) {
+            res.send('No files were uploaded.');
+            return;
+        }
+
+        console.log(req);
+        sampleFile = req.files.sampleFile;
+        fileLoc='./public/images/'+Date.now()+(sampleFile.name.replace(/ /g,''));
+        sampleFile.mv(fileLoc, function (err) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.json({url: req.protocol + '://' + req.get('host')+fileLoc.substring(1)});
+            }
+        })
+    });
+
+
+
 getToken = function (headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');

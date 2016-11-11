@@ -9,6 +9,8 @@ var Schema=mongoose.Schema;
 
 var letsplaySchema = new Schema({
     title: String,
+    alternate_title: String,
+    short_title:String,
     content: String,
     image_url: String,
     title_detials:{},
@@ -16,27 +18,24 @@ var letsplaySchema = new Schema({
     details: {},
     language: String,
     is_feed:Boolean,
+    is_censored:Boolean,
     image:Buffer,
-    short_titles:[{title:String}],
-    alternative_titles:[{title:String}],
     screen_images:[{image_url:String}],
     genre:[{title:String}],
-    chanell:[{title:String}],
+    chanel:String,
+    episodes_number:Number,
     episodes: [{
         title:String,
+        language : String,
+        release_date: { type: Date, default: Date.now },
         streams:
             [
                 {
                     title:String,
-                    stream_links:
-                    [
-                        {
-                            url:String,
-                            isYoutube:Boolean,
-                            isDailymotion:Boolean,
-                            isVimeo:Boolean,
-                        }
-                    ]
+                    url:String,
+                    link_type:String
+
+
                 }
             ]
                 }],
@@ -47,7 +46,8 @@ var letsplaySchema = new Schema({
         title:String
     }],
     season:String,
-    length:Number
+    length:Number,
+    screen_shots:[{image_url:String}]
 
 });
 letsplaySchema.plugin(mongoosePaginate);

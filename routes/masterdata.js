@@ -47,12 +47,12 @@ router.route('/masterdata')
 
                     var masterdata = new Masterdata(req.body);
 
-                    masterdata.save(function(err) {
+                    masterdata.save(function(err,saved) {
                         if (err) {
                             return res.send(err);
                         }
-
-                        res.send({ message: 'Masterdata Added' });
+                        console.log(saved);
+                        res.send({ message: 'Masterdata Added' ,_id:saved._id});
                     });
 
                 }
@@ -82,6 +82,8 @@ router.route('/masterdata/:id').put(function(req,res){
                         return res.send(err);
                     }
 
+                    if(masterdata==null)
+                    return    res.status(404).send({success: false, msg: 'No object'})
                     for (prop in req.body) {
                         masterdata[prop] = req.body[prop];
                     }
