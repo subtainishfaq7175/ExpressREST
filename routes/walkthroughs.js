@@ -64,12 +64,12 @@ router.route('/walkthrough/:id').put(function(req,res){
         }
 
         // save the walkthrough
-        walkthrough.save(function(err) {
+        walkthrough.save(function(err,save) {
             if (err) {
                 return res.send(err);
             }
 
-            res.json({ message: 'Walkthrough updated!' });
+            res.json(save);
         });
     });
 });

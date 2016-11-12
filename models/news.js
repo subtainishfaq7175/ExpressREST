@@ -13,6 +13,7 @@ var newsSchema = new Schema({
     image_url: String,
     content: String,
     language: String,
+    created_time:  { type: Date, default: Date.now },
     is_feed:Boolean,
     image:Buffer,
     tags: [{title:String}]

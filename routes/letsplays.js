@@ -153,9 +153,10 @@ router.route('/letsplayimage/')
             return;
         }
 
-        console.log(req);
         sampleFile = req.files.sampleFile;
-        fileLoc='./public/images/'+Date.now()+(sampleFile.name.replace(/ /g,''));
+
+      var  fileLoc='./public/images/'+Date.now()+(sampleFile.name.replace(/ /g,''));
+        console.log(fileLoc);
         sampleFile.mv(fileLoc, function (err) {
             if (err) {
                 res.status(500).send(err);

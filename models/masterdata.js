@@ -9,6 +9,7 @@ var masterdataSchema = new Schema({
     title: String,
     content:String,
     secondary:String,
+    created_time:  { type: Date, default: Date.now },
     content_type:String
 });
 

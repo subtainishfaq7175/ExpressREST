@@ -12,6 +12,8 @@ var gameSchema = new Schema({
     studio: String,
     series: String,
     trailer: String,
+    created_time:  { type: Date, default: Date.now },
+
     content: String,
     steam_url: String,
     buy_url: String,

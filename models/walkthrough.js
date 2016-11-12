@@ -8,15 +8,28 @@ var Schema=mongoose.Schema;
 
 var walkthroughSchema = new Schema({
     title: String,
+    series: String,
+    artist: String,
+    translator: String,
+    scanlator: String,
+    magazine: String,
+    language: String,
     release_date: String,
     content: String,
     download_url: String,
+    created_time:  { type: Date, default: Date.now },
     image_url: String,
-    categories:[{title:String}],
     genre:[{title:String}],
     flags:[{title:String , image_url:String}],
     tags:[{title:String}],
-    screen_images:[{image_url:String}],
+    chapters:[
+        {title:String,
+         images :[
+             {
+                 image_url: String
+             }
+         ]
+        }],
     sorting_order:Number
 
 
