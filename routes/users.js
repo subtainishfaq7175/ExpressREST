@@ -11,7 +11,7 @@ router.route('/users')
     .get(function(req, res) {
 
 
-      User.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+      User.paginate({}, { page : req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
         if (error) {
           console.error(error);
           res.send(error);

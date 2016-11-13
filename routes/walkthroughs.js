@@ -11,7 +11,7 @@ var router = express.Router();
 router.route('/walkthrough')
     .get(function(req, res) {
           console.log("inget");
-         Walkthrough.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+         Walkthrough.paginate({}, { page: req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
          if (error) {
          console.error(error);
          res.send(error);

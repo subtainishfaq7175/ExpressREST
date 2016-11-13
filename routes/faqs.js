@@ -13,7 +13,7 @@ var router = express.Router();
 router.route('/faqs')
     .get(function(req, res) {
 
-       Faqs.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+       Faqs.paginate({}, { page : req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);

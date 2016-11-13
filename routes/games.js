@@ -18,7 +18,7 @@ router.route('/games')
     .get(function(req, res) {
 
 
-        Games.paginate({}, { page: 1, limit: 10 }, function(error, pageCount, paginatedResults) {
+        Games.paginate({}, { page : req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);
