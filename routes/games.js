@@ -206,37 +206,13 @@ router.route('/games/:id').delete(function(req, res) {
 router.route('/gamesupdate/')
     .get(function(req, res) {
 
+        Games.find(function(err, games) {
+            if (err) {
+                return res.send(err);
+            }
 
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
-
-                if (!user)
-                {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else
-                {
-
-
-                    Games.find(function(err, games) {
-                        if (err) {
-                            return res.send(err);
-                        }
-
-                        res.json(games);
-                    }).limit(5);
-
-
-                }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
-
+            res.json(games);
+        }).limit(5);
 
     });
 
@@ -244,33 +220,14 @@ router.route('/gamesupdate/')
 router.route('/gamesfeed/')
     .get(function(req, res) {
 
-        var token = getToken(req.headers);
-        if (token) {
-            var decoded = jwt.decode(token, config.secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
-                if (err) throw err;
 
-                if (!user)
-                {
-                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-                } else
-                {
+        Games.find({is_feed:true},function(err, games) {
+            if (err) {
+                return res.send(err);
+            }
 
-                    Games.find({is_feed:true},function(err, games) {
-                        if (err) {
-                            return res.send(err);
-                        }
-
-                        res.json(games);
-                    })
-                }
-            });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
-
+            res.json(games);
+        })
 
 
 

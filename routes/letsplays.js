@@ -13,7 +13,7 @@ var router = express.Router();
 router.route('/letsplays')
     .get(function(req, res) {
 
-        Letsplays.paginate({}, { page : req.param('page'), limit: 10 ,sort: { created_time: 'desc' }}, function(error, pageCount, paginatedResults) {
+        Letsplays.paginate({}, { page : req.param('page'), limit: 10 ,sort: { date: 'desc' }}, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);
@@ -131,7 +131,7 @@ router.route('/letsplaysupdate')
             }
 
             res.json(letsplays);
-        }).limit(3);
+        }).limit(5);
     });
 router.route('/letsplayfeed/')
     .get(function(req, res) {
