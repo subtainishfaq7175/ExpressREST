@@ -1,7 +1,10 @@
 /**
+ * Created by subtainishfaq on 12/6/16.
+ */
+/**
  * Created by subtainishfaq on 10/18/16.
  */
-var Faqs = require('../models/faq');
+var Messages = require('../models/message');
 var express = require('express');
 var jwt    = require('jwt-simple');
 var config      = require('../config/database');
@@ -10,23 +13,73 @@ var User = require('../models/user');
 
 var router = express.Router();
 
-router.route('/faqs')
+router.route('/messages')
     .get(function(req, res) {
 
-        Faqs.find({}, function(err, faqs) {
+        Messages.find({}, function(err, messages) {
             if (err) {
                 console.error(err);
                 res.send(err);
             } else {
-                //  console.log('Pages:', pageCount);
-                //  console.log(paginatedResults);
-                res.json(faqs);
+                res.json(messages);
             }
         });
 
-})
+    })
 
-.post(function(req, res) {
+    .post(function(req, res) {
+
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                name: decoded.name
+            }, function(err, user) {
+                if (err) throw err;
+
+                if (!user) {
+//                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+
+                    var messages = new Messages(req.body);
+
+                    messages.save(function(err) {
+                        if (err) {
+                            return res.send(err);
+                        }
+
+                        res.send({ message: 'Messages Added' });
+                    });
+                } else {
+                    req.body["name"]=user.name;
+
+                    var messages = new Messages(req.body);
+
+                    messages.save(function(err) {
+                        if (err) {
+                            return res.send(err);
+                        }
+
+                        res.send({ message: 'Messages Added' });
+                    });
+
+                }
+            });
+        } else {
+            var messages = new Messages(req.body);
+
+            messages.save(function(err) {
+                if (err) {
+                    return res.send(err);
+                }
+
+                res.send({ message: 'Messages Added' });
+            });
+
+        }
+
+    });
+
+router.route('/messages/:id').put(function(req,res){
 
     var token = getToken(req.headers);
     if (token) {
@@ -40,54 +93,22 @@ router.route('/faqs')
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
 
-                var faqs = new Faqs(req.body);
-
-                faqs.save(function(err) {
-                    if (err) {
-                        return res.send(err);
-                    }
-
-                    res.send({ message: 'Faqs Added' });
-                });
-
-            }
-        });
-    } else {
-        return res.status(403).send({success: false, msg: 'No token provided.'});
-    }
-
-});
-
-router.route('/faqs/:id').put(function(req,res){
-
-    var token = getToken(req.headers);
-    if (token) {
-        var decoded = jwt.decode(token, config.secret);
-        User.findOne({
-            name: decoded.name
-        }, function(err, user) {
-            if (err) throw err;
-
-            if (!user) {
-                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-            } else {
-
-                Faqs.findOne({ _id: req.params.id }, function(err, faqs) {
+                Messages.findOne({ _id: req.params.id }, function(err, messages) {
                     if (err) {
                         return res.send(err);
                     }
 
                     for (prop in req.body) {
-                        faqs[prop] = req.body[prop];
+                        messages[prop] = req.body[prop];
                     }
 
-                    // save the faqs
-                    faqs.save(function(err) {
+                    // save the messages
+                    messages.save(function(err) {
                         if (err) {
                             return res.send(err);
                         }
 
-                        res.json({ message: 'Faqs updated!' });
+                        res.json({ message: 'Messages updated!' });
                     });
                 });
             }
@@ -102,17 +123,17 @@ router.route('/faqs/:id').put(function(req,res){
 });
 
 
-router.route('/faqs/:id').get(function(req, res) {
-    Faqs.findOne({ _id: req.params.id}, function(err, faqs) {
+router.route('/messages/:id').get(function(req, res) {
+    Messages.findOne({ _id: req.params.id}, function(err, messages) {
         if (err) {
             return res.send(err);
         }
 
-        res.json(faqs);
+        res.json(messages);
     });
 });
 
-router.route('/faqs/:id').delete(function(req, res) {
+router.route('/messages/:id').delete(function(req, res) {
 
     var token = getToken(req.headers);
     if (token) {
@@ -126,9 +147,9 @@ router.route('/faqs/:id').delete(function(req, res) {
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
 
-                Faqs.remove({
+                Messages.remove({
                     _id: req.params.id
-                }, function(err, faqs) {
+                }, function(err, messages) {
                     if (err) {
                         return res.send(err);
                     }

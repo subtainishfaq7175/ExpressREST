@@ -11,7 +11,7 @@ var router = express.Router();
 router.route('/walkthrough')
     .get(function(req, res) {
           console.log("inget");
-         Walkthrough.paginate({}, { page: req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
+         Walkthrough.paginate({}, { page: parseInt(req.param('page')), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
          if (error) {
          console.error(error);
          res.send(error);
@@ -75,6 +75,7 @@ router.route('/walkthrough/:id').put(function(req,res){
 });
 
 
+
 router.route('/walkthrough/:id').get(function(req, res) {
     Walkthrough.findOne({ _id: req.params.id}, function(err, walkthrough) {
         if (err) {
@@ -99,41 +100,51 @@ router.route('/walkthrough/:id').delete(function(req, res) {
     });
 });
 
+router.route('/walkthroughsearch/:arg')
+    .get(function(req, res) {
+        Walkthrough.find({ $or: [ { "title": { "$regex": req.params.arg, "$options": "i" }  },{ "language": { "$regex": req.params.arg, "$options": "i" }  },{ "tags.title": { "$regex": req.params.arg, "$options": "i" }  }] }, function(err, messages) {
+            if (err) {
+                console.error(err);
+                res.send(err);
+            } else {
+                res.json(messages);
+            }
+        });
+      });
+router.route('/walkthroughsearch')
+    .get(function(req, res) {
+        Walkthrough.find({ $or: [ { "title": { "$regex": '', "$options": "i" }  },{ "language": { "$regex": '', "$options": "i" }  },{ "tags.title": { "$regex": '', "$options": "i" }  }] }, function(err, messages) {
+            if (err) {
+                console.error(err);
+                res.send(err);
+            } else {
+                res.json(messages);
+            }
+        });
+      });
 
-/*
+router.route('/walkthroughsearchtag/:arg')
+    .get(function(req, res) {
+        Walkthrough.find({ $or: [ { "tags.title": { "$regex": req.params.arg, "$options": "i" }  }] }, function(err, messages) {
+            if (err) {
+                console.error(err);
+                res.send(err);
+            } else {
+                res.json(messages);
+            }
+        });
+      });
 
- router.route('/walkthroughimage/:id').post(function(req, res) {
- var walkthrough = new Walkthrough(req.body);
-
- walkthrough.save(function(err) {
- if (err) {
- return res.send(err);
- }
-
- res.send({ message: 'Walkthrough Added' });
- });
- });
-
- put(function(req,res){
- Walkthrough.findOne({ _id: req.params.id }, function(err, walkthrough) {
- if (err) {
- return res.send(err);
- }
-
- for (prop in req.body) {
- walkthrough[prop] = req.body[prop];
- }
-
- // save the walkthrough
- walkthrough.save(function(err) {
- if (err) {
- return res.send(err);
- }
-
- res.json({ message: 'Walkthrough updated!' });
- });
- });
- });
- */
+router.route('/walkthroughsearchlanguage/:arg')
+    .get(function(req, res) {
+        Walkthrough.find({ $or: [ { "language": { "$regex": req.params.arg, "$options": "i" }  }] }, function(err, messages) {
+            if (err) {
+                console.error(err);
+                res.send(err);
+            } else {
+                res.json(messages);
+            }
+        });
+      });
 
 module.exports = router;

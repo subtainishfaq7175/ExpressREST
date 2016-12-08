@@ -11,7 +11,8 @@ var faqSchema = new Schema({
     title: String,
     creation_date:  { type: Date, default: Date.now },
     content: String,
-    created_time:  { type: Date, default: Date.now }
+    created_time:  { type: Date, default: Date.now },
+    category:  { type: String, default: "General" }
 
 
 });

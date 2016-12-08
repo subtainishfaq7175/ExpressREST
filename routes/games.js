@@ -14,6 +14,22 @@ var User = require('../models/user');
 var router = express.Router();
 router.use(busboy())
 
+router.route('/gamessearch')
+    .get(function(req, res) {
+
+
+        Games.paginate({"title":{ "$regex": "^"+req.param('query'), "$options": "i" }}, { page : req.param('page'), limit: 10 , sort : {created_time :'desc'} }, function(error, pageCount, paginatedResults) {
+            if (error) {
+                console.error(error);
+                res.send(error);
+            } else {
+
+                res.json(pageCount);
+            }
+        });
+
+
+});
 router.route('/games')
     .get(function(req, res) {
 
@@ -286,8 +302,235 @@ router.route('/gamesimage/:id').put(function(req,res){
 
 
 });
+router.route('/gameslike/:id').get(function(req,res){
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, config.secret);
+        User.findOne({
+            name: decoded.name
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user)
+            {
+                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+            } else
+            {
 
 
+
+                    Games.findOne({ _id: req.params.id }, function(err, game) {
+                        if (err) {
+                            return res.send(err);
+                        }
+
+                        if ( typeof game["likes"] === 'undefined' )
+                            game["likes"]={count : 0 , _creator:[]};
+
+                        if(game["likes"]._creator.indexOf(user._id)!== -1)
+                        {  var i =game["likes"]._creator.indexOf(user._id);
+                            game["likes"]._creator.pull(user._id );
+                            game["likes"].count--;
+                            game.save();
+                            console.log(i);
+                            return res.json({message: "duplicate"});
+
+                        }
+
+
+                        game["likes"]._creator.push(user._id);
+                        game["likes"].count++;
+
+
+
+
+                        // save the game
+                        game.save(function(err) {
+                            if (err) {
+                                return res.send(err);
+                            }
+
+                            res.json({ message: 'Game updated!' });
+                        });
+                    });
+
+
+
+
+            }
+        });
+    } else {
+        return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
+
+
+});
+
+router.route('/gamesdislikes/:id').get(function(req,res){
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, config.secret);
+        User.findOne({
+            name: decoded.name
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user)
+            {
+                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+            } else
+            {
+
+
+
+                    Games.findOne({ _id: req.params.id }, function(err, game) {
+                        if (err) {
+                            return res.send(err);
+                        }
+
+
+                        if ( typeof game["dislikes"] === 'undefined' )
+                            game["dislikes"]={count : 0 , _creator:[]};
+
+                        if(game["dislikes"]._creator.indexOf(user._id)!== -1)
+                        { var i =game["dislikes"]._creator.indexOf(user._id);
+                            game["dislikes"]._creator.pull(user._id );
+                            game["dislikes"].count--;
+                            game.save();
+                            return res.json({message: "duplicate"});
+
+                        }
+
+
+                        game["dislikes"]._creator.push(user._id);
+                        game["dislikes"].count++;
+
+
+
+
+
+
+                        // save the game
+                        game.save(function(err) {
+                            if (err) {
+                                return res.send(err);
+                            }
+
+                            res.json({ message: 'Game updated!' });
+                        });
+                    });
+
+
+
+
+            }
+        });
+    } else {
+        return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
+
+
+});
+
+
+router.route('/gamesfavourites/:id').get(function(req,res){
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, config.secret);
+        User.findOne({
+            name: decoded.name
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user)
+            {
+                return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+            } else
+            {
+
+
+
+                    Games.findOne({ _id: req.params.id }, function(err, game) {
+                        if (err) {
+                            return res.send(err);
+                        }
+
+
+                        if ( typeof game["favourites"] === 'undefined' )
+                            game["favourites"]={count : 0 , _creator:[]};
+
+                        if(game["favourites"]._creator.indexOf(user._id)!== -1)
+                        {   var  i=game["favourites"]._creator.indexOf(user._id);
+                            game["favourites"]._creator.pull( user._id);
+                            game["favourites"].count--;
+                            game.save();
+                            return res.json({message: "duplicate"});
+
+                        }
+
+                        game["favourites"]._creator.push(user._id);
+                        game["favourites"].count++;
+                        if ( typeof user["favourites_games"] === 'undefined' )
+                            user.favourites_games=[];
+
+                        user.favourites_games.push(game._id);
+                        user.save();
+
+
+                        // save the game
+                        game.save(function(err) {
+                            if (err) {
+                                return res.send(err);
+                            }
+
+                            res.json({ message: 'Game updated!' });
+                        });
+                    });
+
+
+
+
+            }
+        });
+    } else {
+        return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
+
+
+});
+
+router.route('/gamesfavourite')
+    .get(function(req, res) {
+        Games.find().sort('-favourites.count')
+            .limit(5)
+            .exec(function(err, docs)
+
+            {
+                if(!err)
+                    res.json(docs);
+                else
+                    res.send(err);
+            });
+
+
+    });
+
+
+router.route('/gamespopular')
+    .get(function(req, res) {
+        Games.find().sort('-likes.count')
+            .limit(5)
+            .exec(function(err, docs)
+
+            {
+                if(!err)
+                    res.json(docs);
+                else
+                    res.send(err);
+            });
+
+
+    });
 
 getToken = function (headers) {
     if (headers && headers.authorization) {

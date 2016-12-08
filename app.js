@@ -14,6 +14,7 @@ var config      = require('./config/database');
 var authentication=require('./routes/users');
 var comments=require('./routes/comments');
 var faqs=require('./routes/faqs');
+var messages=require('./routes/messages');
 var masterdata=require('./routes/masterdata');
 var fileUpload = require('express-fileupload');
 
@@ -51,6 +52,7 @@ app.use('/api', walkthrough); //This is our route middleware
 app.use('/api', comments); //This is our route middleware
 app.use('/api', faqs); //This is our route middleware
 app.use('/api', masterdata); //This is our route middleware
+app.use('/api', messages); //This is our route middleware
 
 
 module.exports = app;

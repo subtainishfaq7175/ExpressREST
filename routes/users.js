@@ -33,7 +33,10 @@ router.post('/signup', function(req, res) {
     var newUser = new User({
       name: req.body.name,
       password: req.body.password,
-      userrole:req.body.userrole
+      userrole:req.body.userrole,
+        favourite_games:[],
+        favourite_letsplay:[],
+        favourite_news:[]
     });
     // save the user
     newUser.save(function(err) {
@@ -68,6 +71,7 @@ router.post('/authenticate', function(req, res) {
     }
   });
 });
+
 router.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
   var token = getToken(req.headers);
   if (token) {

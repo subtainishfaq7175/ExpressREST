@@ -47,7 +47,13 @@ var letsplaySchema = new Schema({
     }],
     season:String,
     length:Number,
-    screen_shots:[{image_url:String}]
+    screen_shots:[{image_url:String}],
+    likes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    favourites :{ count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    dislikes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    }
 
 });
 letsplaySchema.plugin(mongoosePaginate);

@@ -15,9 +15,14 @@ var UserSchema = new Schema({
     name: {
         type: String,
         unique: true,
-        required: true,
-        created_time:  { type: Date, default: Date.now }
+        required: true
+
     },
+    created_time:  { type: Date, default: Date.now },
+    favourite_games : [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+    favourite_letsplay : [{ type: Schema.Types.ObjectId, ref: 'Letsplay' }],
+    favourite_news : [{ type: Schema.Types.ObjectId, ref: 'News' }]
+,
     password: {
         type: String,
         required: true

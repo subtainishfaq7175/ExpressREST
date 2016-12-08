@@ -4,6 +4,7 @@
 
 var mongoose=require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
+
 var Schema=mongoose.Schema;
 
 var gameSchema = new Schema({
@@ -30,6 +31,12 @@ var gameSchema = new Schema({
     amazon_url:String,
     gamestop_url:String,
     screen_images:[{image_url:String}],
+    likes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    favourites :{ count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    dislikes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    }
 
 
 
@@ -37,6 +44,7 @@ var gameSchema = new Schema({
 });
 
 gameSchema.plugin(mongoosePaginate);
+
 
 
 module.exports = mongoose.model('Game', gameSchema);

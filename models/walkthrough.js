@@ -4,6 +4,7 @@
 
 var mongoose=require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
+
 var Schema=mongoose.Schema;
 
 var walkthroughSchema = new Schema({
@@ -30,7 +31,13 @@ var walkthroughSchema = new Schema({
              }
          ]
         }],
-    sorting_order:Number
+    sorting_order:Number,
+    likes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    favourites :{ count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    },
+    dislikes : { count: {type :Number ,default :0},   _creator :[ { type: Schema.Types.ObjectId, ref: 'User'  ,defualt :0 }]
+    }
 
 
 
@@ -38,6 +45,5 @@ var walkthroughSchema = new Schema({
 });
 
 walkthroughSchema.plugin(mongoosePaginate);
-
 
 module.exports = mongoose.model('Walkthrough', walkthroughSchema);
