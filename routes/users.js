@@ -138,6 +138,50 @@ router.route('/users/:id').delete(function(req, res) {
 
 
 });
+router.route('/users/:id').put(function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user)
+      {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else
+      {
+
+          User.findOne({ _id: req.params.id }, function(err, letsplay) {
+              if (err) {
+                  return res.send(err);
+              }
+
+              for (prop in req.body) {
+                  letsplay[prop] = req.body[prop];
+              }
+
+              // save the letsplay
+              letsplay.save(function(err) {
+                  if (err) {
+                      return res.send(err);
+                  }
+
+                  res.json({ message: 'user updated!' });
+              });
+          });
+
+
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+
+
+
+});
 
 
 getToken = function (headers) {

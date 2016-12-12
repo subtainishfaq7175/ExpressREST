@@ -16,7 +16,7 @@ var letsplaySchema = new Schema({
     title_detials:{},
     stream_url: {},
     details: {},
-    language: String,
+    languages: [{title:String}],
     is_feed:Boolean,
     is_censored:Boolean,
     image:Buffer,

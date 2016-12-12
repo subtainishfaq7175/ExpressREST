@@ -13,7 +13,7 @@ var router = express.Router();
 router.route('/letsplayssearch')
     .get(function(req, res) {
 
-        Letsplays.paginate({"title":{ "$regex": "^"+req.param('query'), "$options": "i" }}, { page : req.param('page'), limit: 10 ,sort: { date: 'desc' }}, function(error, pageCount, paginatedResults) {
+        Letsplays.paginate({"title":{ "$regex": "^"+req.param('query'), "$options": "i" }}, { page : req.param('page'), limit: 10 ,sort: { created_time: 'desc' }}, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);
@@ -24,10 +24,82 @@ router.route('/letsplayssearch')
         });
 
 });
+
+router.route('/letsplayscount/:id')
+    .get(function(req, res) {
+
+     var  query = Letsplays.findOne({ _id: req.params.id }).select({ "likes": 1,  "favourites": 1, "dislikes": 1, "_id": 0});
+
+        query.exec(function (err, someValue) {
+            if (err)     res.send(err);
+            else
+            {
+                res.json(someValue);
+            }
+
+        });
+
+
+
+    });
+
+
+router.route('/letsplaysfilter')
+    .get(function(req, res) {
+
+    var    andingParams=[];
+    var    sorting={};
+    var isTrueSet;
+
+        if(typeof req.param('from')!== 'undefined')
+            andingParams.push({"created_time": {"$gte": new Date(req.param('from'))}});
+        if(typeof req.param('to')!== 'undefined')
+            andingParams.push({"created_time": {"$lte": new Date(req.param('to'))}});
+        if(typeof req.param('censored')!== 'undefined')
+        {
+            isTrueSet = req.param('censored')==='true';
+            andingParams.push({"is_censored": isTrueSet});
+        }
+        if(typeof req.param('language')!== 'undefined')
+        {
+            andingParams.push({"languages.title":{ "$regex": "^"+req.param('language'), "$options": "i" }});
+        }
+      var  query ={
+            $and : andingParams
+
+        };
+        if(typeof req.param('order')!== 'undefined')
+        {
+            sorting["created_time"]=req.param('order');
+        }
+        if(typeof req.param('orderby')!== 'undefined')
+        {
+            sorting[req.param('order')]="desc";
+            if(req.param('orderby')==="title")
+            sorting[req.param('order')]="asc";
+        }
+
+
+
+        //if(typeof req.param('orderby')!== 'undefined')
+
+
+        Letsplays.paginate(query, { page : req.param('page'), limit: 10 ,sort: sorting}, function(error, pageCount, paginatedResults) {
+            if (error) {
+                console.error(error);
+                res.send(error);
+            } else {
+
+                res.json(pageCount);
+            }
+        });
+
+});
+
 router.route('/letsplays')
     .get(function(req, res) {
 
-        Letsplays.paginate({}, { page : req.param('page'), limit: 10 ,sort: { date: 'desc' }}, function(error, pageCount, paginatedResults) {
+        Letsplays.paginate({}, { page : req.param('page'), limit: 10 ,sort: { created_time: 'desc' }}, function(error, pageCount, paginatedResults) {
             if (error) {
                 console.error(error);
                 res.send(error);

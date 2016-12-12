@@ -26,6 +26,72 @@ router.route('/newssearch')
         });
 
 });
+router.route('/commentsadmin')
+    .get(function(req, res) {
+
+        var query = News.find({}).select({ "comments": 1, "_id": 0});
+
+        query.exec(function (err, someValue) {
+            if (err)     res.send(err);
+         else
+             {
+                 var comments=[];
+                 for(var i=0 ; i <someValue.length; i++)
+                 {
+                     comments=comments.concat(someValue[i].comments);
+                 }
+                 res.json(comments);
+             }
+
+        });
+
+
+    });
+router.route('/commentsadmin/:id')
+    .get(function(req, res) {
+
+        var query = News.findOne({ _id: req.params.id }).select({ "comments": 1, "_id": 0});
+
+        query.exec(function (err, someValue) {
+            if (err)     res.send(err);
+         else
+             {
+                 /*var comments=[];
+                 for(var i=0 ; i <someValue.length; i++)
+                 {
+                     comments=comments.concat(someValue[i].comments);
+                 }*/
+                 res.json(someValue);
+             }
+
+        });
+
+
+    });
+
+router.route('/commentsadmin/:id')
+    .delete(function(req, res) {
+
+        var query = News.find({ 'comments._id': req.params.id});
+
+        query.exec(function (err, news) {
+            console.log(news);
+          for(var i=0 ; i <news.length; i++)  {
+          news[i].comments.pull(req.params.id);
+            news[i].save(function(err) {
+                if (err) {
+                    return res.send(err);
+                }});
+
+
+          }
+
+          res.send({ message: 'Comment Remo' })
+
+        });
+
+
+    });
 
 router.route('/news')
     .get(function(req, res) {
@@ -46,6 +112,7 @@ router.route('/news')
         });
 
 })
+
 
 .post(function(req, res) {
 
@@ -400,13 +467,13 @@ router.route('/news/:id').delete(function(req, res) {
 
 router.route('/newsupdate')
     .get(function(req, res) {
-        News.find(function(err, news) {
+        News.find({}).sort({created_time: -1}).limit(1).exec(function(err, news) {
             if (err) {
                 return res.send(err);
             }
 
             res.json(news);
-        }).limit(1);
+        });
     });
 
 router.route('/newsupdatef')

@@ -29,6 +29,63 @@ router.route('/gamessearch')
         });
 
 
+});router.route('/gamescounts/:id')
+    .get(function(req, res) {
+
+
+       var query= Games.findOne({ _id: req.params.id }).select({ "likes": 1,  "favourites": 1, "dislikes": 1, "_id": 0});
+
+        query.exec(function (err, someValue) {
+            if (err)     res.send(err);
+            else
+            {
+                res.json(someValue);
+            }
+
+        });
+
+
+});router.route('/gamesfilter')
+    .get(function(req, res) {
+
+      var  andingParams=[];
+      var  sorting={};
+
+        if(typeof req.param('categories')!== 'undefined')
+            andingParams.push({"categories.title":{ "$regex": "^"+req.param('categories'), "$options": "i" }});
+
+        if(typeof req.param('genre')!== 'undefined')
+            andingParams.push({"genre.title":{ "$regex": "^"+req.param('genre'), "$options": "i" }});
+
+        if(typeof req.param('language')!== 'undefined')
+        {
+            andingParams.push({"languages.title":{ "$regex": "^"+req.param('language'), "$options": "i" }});
+        }
+        var  query ={
+            $and : andingParams
+
+        };
+        if(typeof req.param('order')!== 'undefined')
+        {
+            sorting["created_time"]=req.param('order');
+        }
+        if(typeof req.param('orderby')!== 'undefined')
+        {
+            sorting[req.param('order')]="desc";
+            if(req.param('orderby')==="title")
+                sorting[req.param('order')]="asc";
+        }
+
+        Games.paginate(query, { page : req.param('page'), limit: 10 , sort : sorting }, function(error, pageCount, paginatedResults) {
+            if (error) {
+                res.send(error);
+            } else {
+
+                res.json(pageCount);
+            }
+        });
+
+
 });
 router.route('/games')
     .get(function(req, res) {
